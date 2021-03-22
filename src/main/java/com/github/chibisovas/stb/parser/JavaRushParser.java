@@ -34,7 +34,7 @@ public class JavaRushParser {
         elements.forEach(element -> {
             Element e = element.child(0);
             String name = e.child(0).text();
-            String url = e.attr("href");
+            String url = e.baseUri() + e.attr("href").substring(1);
             Article article = new Article(name, url);
             ARTICLES.add(article);
         });

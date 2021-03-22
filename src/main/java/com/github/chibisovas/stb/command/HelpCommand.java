@@ -11,8 +11,6 @@ public class HelpCommand implements Command {
     private final SendBotMessageService sendBotMessageService;
 
     public static final String HELP_MESSAGE = String.format("<b>Доступные команды</b>\n\n"
-
-                    + "<b>Начать\\закончить работу с ботом</b>\n"
                     + "%s - начать работу\n"
                     + "%s - приостановить работу\n"
                     + "%s - показать статьи\n"

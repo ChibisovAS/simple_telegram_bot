@@ -7,21 +7,83 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 @Component
-public class UserDAO {
+public class UserDAO extends AbstractDAO {
 
-    private JdbcTemplate jdbcTemplate;
+    public static void saveUser(User user) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO user(chat_id, last_article_id) VALUES(?,?)");
 
-    @Autowired
-    public UserDAO(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+            preparedStatement.setLong(1,user.getChatID());
+            preparedStatement.setLong(2,user.getLastArticleID());
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
-    public void saveUser(User user) {
-        jdbcTemplate.update("INSERT INTO user(chat_id, last_article_id) VALUES(?,null)",user.getChatID());
+    public static boolean checkUser(User user) {
+        boolean isUserExist = false;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM user WHERE chat_id = ?");
+            preparedStatement.setLong(1, user.getChatID());
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                isUserExist = true;
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return isUserExist;
     }
-    public void setUserLastChatID(User user) {
-        jdbcTemplate.update("UPDATE user SET last_article_id = ? WHERE  chat_id = ?",user.getLastArticleID(),user.getChatID());
+
+    public static void setUserLastArticleID(User user) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE user SET last_article_id = ? WHERE chat_id = ?");
+
+            preparedStatement.setLong(1,user.getLastArticleID());
+            preparedStatement.setLong(2,user.getChatID());
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+    public static long getUserLastArticleID(User user) {
+        long lastArticleID = 0;
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT last_article_id FROM user WHERE chat_id = ?");
+
+            preparedStatement.setLong(1,user.getChatID());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            lastArticleID =  resultSet.getLong("last_article_id");
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return lastArticleID;
+    }
+    public static void removeUser(User user) {
+
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM user WHERE chat_id = ?");
+
+            preparedStatement.setLong(1,user.getChatID());
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
 }

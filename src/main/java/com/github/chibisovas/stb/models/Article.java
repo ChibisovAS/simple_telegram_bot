@@ -4,6 +4,9 @@ public class Article {
     private String name;
     private String URL;
 
+    public Article() {
+    }
+
     public Article(String name, String URL) {
         this.name = name;
         this.URL = URL;
@@ -27,9 +30,10 @@ public class Article {
 
     @Override
     public String toString() {
-        return "Article{" +
-                "name='" + name + '\'' +
-                ", URL='" + URL + '\'' +
-                '}';
+        return String.format("<b> %s </b>\n" +
+                            "Ссылка: \n" +
+                            "%s", name, URL);
+
+
     }
 }

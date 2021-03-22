@@ -1,27 +1,31 @@
 package com.github.chibisovas.stb.models;
 
 public class User {
-    private int chatID;
-    private int lastArticleID;
+    private Long chatID;
+    private Long lastArticleID;
 
-    public User(int chatID, int lastArticleID) {
+    public User(Long chatID) {
+        this.chatID = chatID;
+    }
+
+    public User(Long chatID, Long lastArticleID) {
         this.chatID = chatID;
         this.lastArticleID = lastArticleID;
     }
 
-    public int getChatID() {
+    public Long getChatID() {
         return chatID;
     }
 
-    public void setChatID(int chatID) {
+    public void setChatID(Long chatID) {
         this.chatID = chatID;
     }
 
-    public int getLastArticleID() {
+    public Long getLastArticleID() {
         return lastArticleID;
     }
 
-    public void setLastArticleID(int lastArticleID) {
+    public void setLastArticleID(Long lastArticleID) {
         this.lastArticleID = lastArticleID;
     }
 }
